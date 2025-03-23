@@ -163,7 +163,6 @@ const CreateMagneticCardPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...dataItem,
-          // The date fields are directly passed as they are now Date objects/null
           requestDate: dataItem.requestDate,
           issuedAt: dataItem.issuedAt,
           deliveryDate: dataItem.deliveryDate,
