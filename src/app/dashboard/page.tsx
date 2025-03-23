@@ -216,6 +216,7 @@ export default function StatisticsDashboardPage() {
                   data={creditStatesChartData}
                   field="value"
                   categoryField="category"
+                  color={"#00FF7F"}
                 />
               </ChartSeries>
             </Chart>
