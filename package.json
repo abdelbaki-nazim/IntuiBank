@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx kendo-ui-license activate --key=$TELERIK_UI_LICENSE prisma generate && next build",
+    "build": "npx kendo-ui-license activate --key=$TELERIK_LICENSE prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
