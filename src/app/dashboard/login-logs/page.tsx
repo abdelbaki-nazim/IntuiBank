@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { ListView, ListViewEvent } from "@progress/kendo-react-listview";
 import { Card, CardTitle, CardSubtitle } from "@progress/kendo-react-layout";
 import { Input } from "@progress/kendo-react-inputs";
+import { Loader } from "@progress/kendo-react-indicators";
 
 interface LoginLog {
   id: string;
@@ -157,9 +158,7 @@ const LoginLogsList: React.FC = () => {
         style={{ height: 530, overflow: "auto" }}
         onScroll={scrollHandler}
       />
-      {loading && (
-        <div style={{ textAlign: "center", padding: "16px" }}>Loading...</div>
-      )}
+      {loading && <Loader type="infinite-spinner" />}
       {!hasMore && (
         <div style={{ textAlign: "center", padding: "16px" }}>
           No more data available.
