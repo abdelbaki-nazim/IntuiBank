@@ -562,6 +562,9 @@ const AdminSideNav = () => {
               isControlled={true}
               expanded={expanded}
               onSelect={handleSelect}
+              style={{
+                borderColor: "transparent"
+              }}
             >
               {renderPanelBarItems(items)}
             </PanelBar>
