@@ -232,6 +232,7 @@ export default function AccountsDashboardPage() {
                 <CardTitle>
                   <BadgeContainer>
                     <span
+                      className="title"
                       style={{
                         textDecoration: "underline",
                         color: "inherit",
