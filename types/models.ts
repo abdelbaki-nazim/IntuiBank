@@ -1,4 +1,5 @@
 // Some details are in french
+// You can translate them
 
 export enum Role {
   SUPERADMIN = "SUPERADMIN",
