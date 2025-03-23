@@ -11,6 +11,8 @@ import { Form, Field } from "@progress/kendo-react-form";
 import Link from "next/link";
 import { getFullName } from "../../../../lib/getFullName";
 import { Typography } from "@progress/kendo-react-common";
+import KLoader from "@/app/components/loader/KLoader";
+import { Badge, BadgeContainer } from "@progress/kendo-react-indicators";
 
 interface Client {
   id: string;
@@ -208,7 +210,7 @@ const LegalActionsPage: React.FC = () => {
         />
       </div>
       {loading ? (
-        <div style={{ textAlign: "center", marginTop: "2rem" }}>Loading...</div>
+        <KLoader />
       ) : Object.keys(groupedData).length === 0 ? (
         <div>No results found</div>
       ) : (
@@ -229,26 +231,19 @@ const LegalActionsPage: React.FC = () => {
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          justifyContent: "space-between",
                         }}
                       >
-                        <span>
-                          Credit ID: {credit.id}{" "}
-                          <span
-                            style={{
-                              background: "#1976d2",
-                              color: "#fff",
-                              borderRadius: "4px",
-                              padding: "2px 6px",
-                              marginLeft: "8px",
-                            }}
-                          >
+                        <BadgeContainer>
+                          <span className="title">Credit ID: {credit.id} </span>
+                          <Badge themeColor={"warning"} rounded={"full"}>
                             {credit.legalAction ? credit.legalAction.length : 0}
-                          </span>
-                        </span>
+                          </Badge>
+                        </BadgeContainer>
+
                         <Button
                           onClick={() => handleOpenDialog(credit)}
-                          themeColor="primary"
+                          themeColor="base"
+                          style={{ marginLeft: "200px" }}
                         >
                           Start Legal Action
                         </Button>
@@ -330,8 +325,7 @@ const LegalActionsPage: React.FC = () => {
         <Dialog
           title="Add Legal Action"
           onClose={() => setOpenDialog(false)}
-          minWidth={300}
-          width={"70%"}
+          width={300}
         >
           <Form
             initialValues={{
@@ -346,7 +340,7 @@ const LegalActionsPage: React.FC = () => {
             onSubmit={handleSubmit}
             render={(formRenderProps) => (
               <>
-                <div style={{ margin: "20px 0" }}>
+                <div style={{ margin: "20px 0", width: "100%" }}>
                   {selectedCredit && (
                     <Typography.p>Credit ID: {selectedCredit.id}</Typography.p>
                   )}
@@ -354,39 +348,46 @@ const LegalActionsPage: React.FC = () => {
                     name="unpaidClaim"
                     component={NumberInput}
                     label="Unpaid Claim"
-                    validator={(value: any) =>
+                    validator={(value) =>
                       value === "" || isNaN(Number(value)) ? "Required" : ""
                     }
+                    style={{ width: "100%" }}
                   />
                   <Field
                     name="invitation"
                     component={TextInput}
                     label="Invitation"
+                    style={{ width: "100%" }}
                   />
                   <Field
                     name="miseEnDemeure"
                     component={TextInput}
                     label="Mise en demeure"
+                    style={{ width: "100%" }}
                   />
                   <Field
                     name="lastWarning"
                     component={TextInput}
                     label="Last Warning"
+                    style={{ width: "100%" }}
                   />
                   <Field
                     name="sommation"
                     component={TextInput}
                     label="Sommation"
+                    style={{ width: "100%" }}
                   />
                   <Field
                     name="pvCarence"
                     component={TextInput}
                     label="PV Carence"
+                    style={{ width: "100%" }}
                   />
                   <Field
                     name="observation"
                     component={TextInput}
                     label="Observation"
+                    style={{ width: "100%" }}
                   />
                 </div>
                 <div style={{ textAlign: "right" }}>
