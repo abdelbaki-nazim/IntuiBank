@@ -8,21 +8,43 @@ import {
   FormRenderProps,
   FieldRenderProps,
 } from "@progress/kendo-react-form";
-import { DropDownList } from '@progress/kendo-react-dropdowns';
+import { DropDownList } from "@progress/kendo-react-dropdowns";
 import { Input, TextArea } from "@progress/kendo-react-inputs";
 import { Button } from "@progress/kendo-react-buttons";
-import { Error as KendoError } from "@progress/kendo-react-labels";
+import { Error as KendoError, Label } from "@progress/kendo-react-labels";
 import { Card } from "@progress/kendo-react-layout";
 import { Loader } from "@progress/kendo-react-indicators";
-import { Notification, NotificationGroup } from "@progress/kendo-react-notification";
+import {
+  Notification,
+  NotificationGroup,
+} from "@progress/kendo-react-notification";
 import { Typography } from "@progress/kendo-react-common";
+import {
+  DatePicker,
+  DatePickerChangeEvent,
+} from "@progress/kendo-react-dateinputs";
 
 const TextInput = (fieldRenderProps: FieldRenderProps & { label?: string }) => {
-  const { validationMessage, visited, label, value, onChange, onFocus, onBlur, ...others } = fieldRenderProps;
+  const {
+    validationMessage,
+    visited,
+    label,
+    value,
+    onChange,
+    onFocus,
+    onBlur,
+    ...others
+  } = fieldRenderProps;
   return (
     <div style={{ marginBottom: "1rem" }}>
       {label && (
-        <label style={{ display: "block", marginBottom: "0.5rem", textTransform: "lowercase" }}>
+        <label
+          style={{
+            display: "block",
+            marginBottom: "0.5rem",
+            textTransform: "lowercase",
+          }}
+        >
           {label}
         </label>
       )}
@@ -40,12 +62,30 @@ const TextInput = (fieldRenderProps: FieldRenderProps & { label?: string }) => {
   );
 };
 
-const TextAreaInput = (fieldRenderProps: FieldRenderProps & { label?: string; rows?: number }) => {
-  const { validationMessage, visited, label, value, onChange, onFocus, onBlur, rows, ...others } = fieldRenderProps;
+const TextAreaInput = (
+  fieldRenderProps: FieldRenderProps & { label?: string; rows?: number }
+) => {
+  const {
+    validationMessage,
+    visited,
+    label,
+    value,
+    onChange,
+    onFocus,
+    onBlur,
+    rows,
+    ...others
+  } = fieldRenderProps;
   return (
     <div style={{ marginBottom: "1rem" }}>
       {label && (
-        <label style={{ display: "block", marginBottom: "0.5rem", textTransform: "lowercase" }}>
+        <label
+          style={{
+            display: "block",
+            marginBottom: "0.5rem",
+            textTransform: "lowercase",
+          }}
+        >
           {label}
         </label>
       )}
@@ -71,12 +111,27 @@ const DropDownInput = (
     dataItemKey: string;
   }
 ) => {
-  const { validationMessage, visited, data, textField, dataItemKey, onChange, value, ...others } = fieldRenderProps;
+  const {
+    validationMessage,
+    visited,
+    data,
+    textField,
+    dataItemKey,
+    onChange,
+    value,
+    ...others
+  } = fieldRenderProps;
   const selectedItem = data.find((item) => item.value === value) || null;
   return (
     <div style={{ marginBottom: "1rem" }}>
       {others.label && (
-        <label style={{ display: "block", marginBottom: "0.5rem", textTransform: "lowercase" }}>
+        <label
+          style={{
+            display: "block",
+            marginBottom: "0.5rem",
+            textTransform: "lowercase",
+          }}
+        >
           {others.label}
         </label>
       )}
@@ -95,12 +150,44 @@ const DropDownInput = (
   );
 };
 
-const requiredValidator = (value: any) => (value ? "" : "This field is required.");
+const DatePickerInput = (
+  fieldRenderProps: FieldRenderProps & { label?: string }
+) => {
+  const { validationMessage, visited, onChange, value, label, ...others } =
+    fieldRenderProps;
+
+  const handleChange = (event: DatePickerChangeEvent) => {
+    onChange({ target: { value: event.value } });
+  };
+
+  return (
+    <div style={{ marginBottom: "1rem" }}>
+      {label && (
+        <label
+          style={{
+            display: "block",
+            marginBottom: "0.5rem",
+            textTransform: "lowercase",
+          }}
+        >
+          {label}
+        </label>
+      )}
+      <DatePicker value={value} onChange={handleChange} {...others} />
+      {visited && validationMessage && (
+        <KendoError>{validationMessage}</KendoError>
+      )}
+    </div>
+  );
+};
+
+const requiredValidator = (value: any) =>
+  value ? "" : "This field is required.";
 
 const EditChequePage = () => {
   const { id } = useParams() as { id: string };
   const router = useRouter();
-  
+
   const [initialValues, setInitialValues] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -109,21 +196,24 @@ const EditChequePage = () => {
     message: "",
     severity: "success" as "success" | "error",
   });
-  
-  const handleCloseToast = () =>
-    setToast((prev) => ({ ...prev, open: false }));
-  
+
+  const handleCloseToast = () => setToast((prev) => ({ ...prev, open: false }));
+
   useEffect(() => {
     fetch(`/api/cheques/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setInitialValues({
           chequeNumber: data.chequeNumber || "",
-          requestDate: data.requestDate ? data.requestDate.split("T")[0] : "",
-          issuedAt: data.issuedAt ? data.issuedAt.split("T")[0] : "",
-          deliveryDate: data.deliveryDate ? data.deliveryDate.split("T")[0] : "",
-          receptionDate: data.receptionDate ? data.receptionDate.split("T")[0] : "",
-          expirationDate: data.expirationDate ? data.expirationDate.split("T")[0] : "",
+          requestDate: data.requestDate ? new Date(data.requestDate) : null,
+          issuedAt: data.issuedAt ? new Date(data.issuedAt) : null,
+          deliveryDate: data.deliveryDate ? new Date(data.deliveryDate) : null,
+          receptionDate: data.receptionDate
+            ? new Date(data.receptionDate)
+            : null,
+          expirationDate: data.expirationDate
+            ? new Date(data.expirationDate)
+            : null,
           observation: data.observation || "",
         });
         setLoading(false);
@@ -133,12 +223,13 @@ const EditChequePage = () => {
         setLoading(false);
       });
   }, [id]);
-  
+
   const handleSubmit = async (dataItem: any) => {
-    if (!dataItem.chequeNumber.trim() || !dataItem.requestDate.trim()) {
+    if (!dataItem.chequeNumber.trim() || !dataItem.requestDate) {
       setToast({
         open: true,
-        message: "Please fill in the required fields (Cheque Number and Request Date).",
+        message:
+          "Please fill in the required fields (Cheque Number and Request Date).",
         severity: "error",
       });
       return;
@@ -147,11 +238,19 @@ const EditChequePage = () => {
     try {
       const payload = {
         chequeNumber: dataItem.chequeNumber,
-        requestDate: dataItem.requestDate ? new Date(dataItem.requestDate) : null,
+        requestDate: dataItem.requestDate
+          ? new Date(dataItem.requestDate)
+          : null,
         issuedAt: dataItem.issuedAt ? new Date(dataItem.issuedAt) : null,
-        deliveryDate: dataItem.deliveryDate ? new Date(dataItem.deliveryDate) : null,
-        receptionDate: dataItem.receptionDate ? new Date(dataItem.receptionDate) : null,
-        expirationDate: dataItem.expirationDate ? new Date(dataItem.expirationDate) : null,
+        deliveryDate: dataItem.deliveryDate
+          ? new Date(dataItem.deliveryDate)
+          : null,
+        receptionDate: dataItem.receptionDate
+          ? new Date(dataItem.receptionDate)
+          : null,
+        expirationDate: dataItem.expirationDate
+          ? new Date(dataItem.expirationDate)
+          : null,
         observation: dataItem.observation || null,
       };
       const res = await fetch(`/api/cheques/${id}/edit`, {
@@ -175,19 +274,28 @@ const EditChequePage = () => {
       setIsSubmitting(false);
     }
   };
-  
+
   if (loading || !initialValues) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "50vh",
+        }}
+      >
         <Loader size="large" />
       </div>
     );
   }
-  
+
   return (
     <div style={{ margin: "1rem" }}>
       <Card style={{ padding: "20px" }}>
-        <Typography.h4 style={{ textTransform: "lowercase", marginBottom: "1rem" }}>
+        <Typography.h4
+          style={{ textTransform: "lowercase", marginBottom: "1rem" }}
+        >
           edit cheque
         </Typography.h4>
         <Form
@@ -196,7 +304,10 @@ const EditChequePage = () => {
           render={(formRenderProps: FormRenderProps) => (
             <FormElement style={{ maxWidth: 650 }}>
               <fieldset className="k-form-fieldset">
-                <legend className="k-form-legend" style={{ textTransform: "lowercase" }}>
+                <legend
+                  className="k-form-legend"
+                  style={{ textTransform: "lowercase" }}
+                >
                   edit cheque
                 </legend>
                 <Field
@@ -207,34 +318,30 @@ const EditChequePage = () => {
                 />
                 <Field
                   name="requestDate"
-                  component={TextInput}
+                  component={DatePickerInput}
                   label="request date *"
-                  type="date"
                   validator={requiredValidator}
                 />
                 <Field
                   name="issuedAt"
-                  component={TextInput}
+                  component={DatePickerInput}
                   label="issued date"
-                  type="date"
                 />
                 <Field
                   name="deliveryDate"
-                  component={TextInput}
+                  component={DatePickerInput}
                   label="delivery date"
-                  type="date"
                 />
                 <Field
                   name="receptionDate"
-                  component={TextInput}
+                  component={DatePickerInput}
                   label="reception date"
-                  type="date"
                 />
                 <Field
                   name="expirationDate"
-                  component={TextInput}
+                  component={DatePickerInput}
                   label="expiration date *"
-                  type="date"
+                  validator={requiredValidator}
                 />
                 <Field
                   name="observation"
@@ -243,11 +350,21 @@ const EditChequePage = () => {
                   rows={3}
                 />
               </fieldset>
-              <div className="k-form-buttons" style={{ marginTop: "1rem", textAlign: "center" }}>
-                <Button fillMode="outline" onClick={() => router.push(`/dashboard/cheques/${id}`)}>
+              <div
+                className="k-form-buttons"
+                style={{ marginTop: "1rem", textAlign: "center" }}
+              >
+                <Button
+                  fillMode="outline"
+                  onClick={() => router.push(`/dashboard/cheques/${id}`)}
+                >
                   back
                 </Button>
-                <Button type="submit" themeColor="primary" disabled={isSubmitting}>
+                <Button
+                  type="submit"
+                  themeColor="primary"
+                  disabled={isSubmitting}
+                >
                   {isSubmitting ? "updating..." : "update cheque"}
                 </Button>
               </div>
@@ -255,7 +372,14 @@ const EditChequePage = () => {
           )}
         />
       </Card>
-      <NotificationGroup style={{ position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)" }}>
+      <NotificationGroup
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: "50%",
+          transform: "translateX(-50%)",
+        }}
+      >
         {toast.open && (
           <Notification
             type={{ style: toast.severity, icon: true }}

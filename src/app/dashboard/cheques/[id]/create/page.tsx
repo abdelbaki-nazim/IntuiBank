@@ -129,7 +129,7 @@ const CreateChequePage = () => {
   const handleCloseToast = () => setToast((prev) => ({ ...prev, open: false }));
 
   const handleSubmit = async (dataItem: any) => {
-    if (!dataItem.chequeNumber.trim() || !dataItem.requestDate.trim()) {
+    if (!dataItem.chequeNumber.trim() || !dataItem.requestDate) {
       setToast({
         open: true,
         message:
