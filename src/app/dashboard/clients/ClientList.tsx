@@ -17,6 +17,7 @@ import {
   pinIcon,
   arrowRightIcon,
 } from "@progress/kendo-svg-icons";
+import { getFullName } from "../../../../lib/getFullName";
 
 export interface Client {
   id: string;
@@ -76,6 +77,24 @@ const ClientList: React.FC<ClientListProps> = ({
     });
   };
 
+  const CustomHeaderCell = (props: any) => {
+    const { thProps, columnMenuWrapperProps, selectionChange, ...rest } = props;
+    return (
+      <th
+        {...rest}
+        style={{
+          backgroundColor: "#e0f4dc",
+          color: "#222",
+          fontWeight: "normal",
+          padding: 12,
+          ...rest.style,
+        }}
+      >
+        {rest.children}
+      </th>
+    );
+  };
+
   const handleOpenDelete = (id: string) => {
     setDeleteCandidate(id);
   };
@@ -89,24 +108,6 @@ const ClientList: React.FC<ClientListProps> = ({
       onDelete(deleteCandidate);
       setDeleteCandidate(null);
     }
-  };
-
-  const getFullName = (client: Client) => {
-    let fullName = "";
-    if (client.type === "PHYSICAL" && client.personPhysical) {
-      fullName = `${client.personPhysical.lastName || ""} ${
-        client.personPhysical.middleName || ""
-      } ${client.personPhysical.firstName || ""}`.trim();
-      if (
-        client.personPhysical.maidenName &&
-        client.personPhysical.maidenName !== client.personPhysical.lastName
-      ) {
-        fullName += ` (née ${client.personPhysical.maidenName})`;
-      }
-    } else if (client.type === "MORAL" && client.personMoral) {
-      fullName = client.personMoral.companyName || "";
-    }
-    return fullName;
   };
 
   const iconMapping: Record<string, any> = {
@@ -158,7 +159,7 @@ const ClientList: React.FC<ClientListProps> = ({
             onClick={() => handleOpenDelete(client.id)}
             disabled={deletingId === client.id}
             themeColor="error"
-            fillMode="outline"
+            fillMode="flat"
           >
             {deletingId === client.id ? <Loader size="small" /> : "Delete"}
           </Button>
@@ -189,11 +190,35 @@ const ClientList: React.FC<ClientListProps> = ({
         pageSizes: [10, 30, 50, "All"],
       }}
     >
-      <GridColumn title="Full Name" cell={FullNameCell} />
-      <GridColumn title="Creation Date" cell={CreatedAtCell} width="200px" />
-      <GridColumn title="Type" cell={TypeCell} width="150px" />
-      <GridColumn title="Status" cell={StatusCell} width="150px" />
-      <GridColumn title="Actions" cell={ActionsCell} width="100px" />
+      <GridColumn
+        title="Full Name"
+        cell={FullNameCell}
+        cells={{ headerCell: CustomHeaderCell }}
+      />
+      <GridColumn
+        title="Creation Date"
+        cell={CreatedAtCell}
+        cells={{ headerCell: CustomHeaderCell }}
+        width="200px"
+      />
+      <GridColumn
+        title="Type"
+        cell={TypeCell}
+        cells={{ headerCell: CustomHeaderCell }}
+        width="150px"
+      />
+      <GridColumn
+        title="Status"
+        cell={StatusCell}
+        cells={{ headerCell: CustomHeaderCell }}
+        width="150px"
+      />
+      <GridColumn
+        title="Actions"
+        cell={ActionsCell}
+        cells={{ headerCell: CustomHeaderCell }}
+        width="100px"
+      />
     </Grid>
   );
 
