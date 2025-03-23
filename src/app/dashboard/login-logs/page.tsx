@@ -20,7 +20,7 @@ const LoginLogsList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const take = 20;
+  const take = 10;
 
   const skipRef = useRef<number>(0);
 
