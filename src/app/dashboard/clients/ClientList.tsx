@@ -83,7 +83,7 @@ const ClientList: React.FC<ClientListProps> = ({
       <th
         {...rest}
         style={{
-          backgroundColor: "#e0f4dc",
+          backgroundColor: "#dcddf4",
           color: "#222",
           fontWeight: "normal",
           padding: 12,
