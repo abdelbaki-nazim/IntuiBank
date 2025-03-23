@@ -78,7 +78,7 @@ export default function CurrencyAreaChart() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "64px"
+          height: "64px",
         }}
       >
         <Loader type={"pulsing"} />
@@ -117,6 +117,8 @@ export default function CurrencyAreaChart() {
             field="EUR"
             categoryField="date"
             name="EUR"
+            color="#337AFF"
+            opacity={0.3}
           />
           <ChartSeriesItem
             type="area"
@@ -124,6 +126,8 @@ export default function CurrencyAreaChart() {
             field="GBP"
             categoryField="date"
             name="GBP"
+            color="#FF5733"
+            opacity={0.3}
           />
           <ChartSeriesItem
             type="area"
@@ -131,6 +135,8 @@ export default function CurrencyAreaChart() {
             field="CHF"
             categoryField="date"
             name="CHF"
+            color="#33CC33"
+            opacity={0.3}
           />
           <ChartSeriesItem
             type="area"
@@ -138,6 +144,7 @@ export default function CurrencyAreaChart() {
             field="CAD"
             categoryField="date"
             name="CAD"
+            opacity={0.3}
           />
         </ChartSeries>
       </Chart>
