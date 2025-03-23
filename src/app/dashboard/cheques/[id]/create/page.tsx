@@ -8,6 +8,11 @@ import {
   FormRenderProps,
   FieldRenderProps,
 } from "@progress/kendo-react-form";
+import {
+  DatePicker,
+  DatePickerChangeEvent,
+} from "@progress/kendo-react-dateinputs";
+import { Label } from "@progress/kendo-react-labels";
 import { Input, TextArea } from "@progress/kendo-react-inputs";
 import { DropDownList } from "@progress/kendo-react-dropdowns";
 import { Button } from "@progress/kendo-react-buttons";
@@ -92,6 +97,25 @@ const CreateChequePage = () => {
     receptionDate: "",
     expirationDate: "",
     observation: "",
+  };
+
+  const DatePickerInput = (fieldRenderProps: FieldRenderProps) => {
+    const { validationMessage, visited, onChange, value, label, ...others } =
+      fieldRenderProps;
+
+    const handleChange = (event: DatePickerChangeEvent) => {
+      onChange({ target: { value: event.value } });
+    };
+
+    return (
+      <div>
+        {label && <Label>{label}</Label>}
+        <DatePicker value={value} onChange={handleChange} {...others} />
+        {visited && validationMessage && (
+          <KendoError>{validationMessage}</KendoError>
+        )}
+      </div>
+    );
   };
 
   const [loading, setLoading] = useState(false);
@@ -180,42 +204,29 @@ const CreateChequePage = () => {
                 <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="requestDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="Request Date *"
-                    type="date"
                     validator={requiredValidator}
                   />
-                </div>
-                <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="issuedAt"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="Issued Date"
-                    type="date"
                   />
-                </div>
-                <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="deliveryDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="Delivery Date"
-                    type="date"
                   />
-                </div>
-                <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="receptionDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="Reception Date"
-                    type="date"
                   />
-                </div>
-                <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="expirationDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="Expiration Date"
-                    type="date"
                   />
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
