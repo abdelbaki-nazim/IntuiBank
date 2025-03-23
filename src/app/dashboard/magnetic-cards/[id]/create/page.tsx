@@ -11,18 +11,20 @@ import {
 import { Input, TextArea } from "@progress/kendo-react-inputs";
 import { DropDownList } from "@progress/kendo-react-dropdowns";
 import { Button } from "@progress/kendo-react-buttons";
-import { Error as KendoError } from "@progress/kendo-react-labels";
+import { Error as KendoError, Label } from "@progress/kendo-react-labels";
 import { Card } from "@progress/kendo-react-layout";
 import {
   Notification,
   NotificationGroup,
 } from "@progress/kendo-react-notification";
 import KLoader from "@/app/components/loader/KLoader";
+import { DatePicker, DatePickerChangeEvent } from "@progress/kendo-react-dateinputs";
 
 const TextInput = (fieldRenderProps: FieldRenderProps) => {
-  const { validationMessage, visited, ...others } = fieldRenderProps;
+  const { validationMessage, visited, label, ...others } = fieldRenderProps;
   return (
     <div>
+      {label && <Label>{label}</Label>}
       <Input {...others} />
       {visited && validationMessage && (
         <KendoError>{validationMessage}</KendoError>
@@ -32,9 +34,10 @@ const TextInput = (fieldRenderProps: FieldRenderProps) => {
 };
 
 const TextAreaInput = (fieldRenderProps: FieldRenderProps) => {
-  const { validationMessage, visited, ...others } = fieldRenderProps;
+  const { validationMessage, visited, label, ...others } = fieldRenderProps;
   return (
     <div>
+      {label && <Label>{label}</Label>}
       <TextArea {...others} />
       {visited && validationMessage && (
         <KendoError>{validationMessage}</KendoError>
@@ -58,6 +61,7 @@ const DropDownInput = (
     dataItemKey,
     onChange,
     value,
+    label,
     ...others
   } = fieldRenderProps;
 
@@ -65,6 +69,7 @@ const DropDownInput = (
 
   return (
     <div>
+      {label && <Label>{label}</Label>}
       <DropDownList
         data={data}
         textField={textField}
@@ -73,6 +78,24 @@ const DropDownInput = (
         onChange={(e) => onChange(e.value ? e.value : "")}
         {...others}
       />
+      {visited && validationMessage && (
+        <KendoError>{validationMessage}</KendoError>
+      )}
+    </div>
+  );
+};
+
+const DatePickerInput = (fieldRenderProps: FieldRenderProps) => {
+  const { validationMessage, visited, onChange, value, label, ...others } = fieldRenderProps;
+
+  const handleChange = (event: DatePickerChangeEvent) => {
+    onChange({ target: { value: event.value } });
+  };
+
+  return (
+    <div>
+      {label && <Label>{label}</Label>}
+      <DatePicker value={value} onChange={handleChange} {...others} />
       {visited && validationMessage && (
         <KendoError>{validationMessage}</KendoError>
       )}
@@ -93,11 +116,11 @@ const CreateMagneticCardPage = () => {
     cvv: "",
     status: "PENDING",
     civility: "",
-    requestDate: "",
-    issuedAt: "",
-    deliveryDate: "",
-    receptionDate: "",
-    expirationDate: "",
+    requestDate: null,
+    issuedAt: null,
+    deliveryDate: null,
+    receptionDate: null,
+    expirationDate: null,
     address: "",
     state: "",
     city: "",
@@ -105,11 +128,11 @@ const CreateMagneticCardPage = () => {
     deliveryMethod: "ENVOI",
     creationOrRenewal: "CREATION",
     pinCodeReceived: "",
-    pinCodeReceptionDate: "",
-    pinCodeDeliveryDate: "",
+    pinCodeReceptionDate: null,
+    pinCodeDeliveryDate: null,
     otpCodeReceived: "",
-    otpCodeReceptionDate: "",
-    otpCodeDeliveryDate: "",
+    otpCodeReceptionDate: null,
+    otpCodeDeliveryDate: null,
     observation: "",
     cardTypeId: "",
   };
@@ -139,46 +162,17 @@ const CreateMagneticCardPage = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          cardNumber: dataItem.cardNumber,
-          cardHolderName: dataItem.cardHolderName,
-          cvv: dataItem.cvv,
-          status: dataItem.status,
-          civility: dataItem.civility,
-          requestDate: dataItem.requestDate
-            ? new Date(dataItem.requestDate)
-            : null,
-          issuedAt: dataItem.issuedAt ? new Date(dataItem.issuedAt) : null,
-          deliveryDate: dataItem.deliveryDate
-            ? new Date(dataItem.deliveryDate)
-            : null,
-          receptionDate: dataItem.receptionDate
-            ? new Date(dataItem.receptionDate)
-            : null,
-          expirationDate: dataItem.expirationDate
-            ? new Date(dataItem.expirationDate)
-            : null,
-          address: dataItem.address,
-          state: dataItem.state,
-          city: dataItem.city,
-          postalCode: dataItem.postalCode,
-          deliveryMethod: dataItem.deliveryMethod,
-          creationOrRenewal: dataItem.creationOrRenewal,
-          pinCodeReceived: dataItem.pinCodeReceived,
-          pinCodeReceptionDate: dataItem.pinCodeReceptionDate
-            ? new Date(dataItem.pinCodeReceptionDate)
-            : null,
-          pinCodeDeliveryDate: dataItem.pinCodeDeliveryDate
-            ? new Date(dataItem.pinCodeDeliveryDate)
-            : null,
-          otpCodeReceived: dataItem.otpCodeReceived,
-          otpCodeReceptionDate: dataItem.otpCodeReceptionDate
-            ? new Date(dataItem.otpCodeReceptionDate)
-            : null,
-          otpCodeDeliveryDate: dataItem.otpCodeDeliveryDate
-            ? new Date(dataItem.otpCodeDeliveryDate)
-            : null,
-          observation: dataItem.observation,
-          cardTypeId: dataItem.cardTypeId,
+          ...dataItem,
+          // The date fields are directly passed as they are now Date objects/null
+          requestDate: dataItem.requestDate,
+          issuedAt: dataItem.issuedAt,
+          deliveryDate: dataItem.deliveryDate,
+          receptionDate: dataItem.receptionDate,
+          expirationDate: dataItem.expirationDate,
+          pinCodeReceptionDate: dataItem.pinCodeReceptionDate,
+          pinCodeDeliveryDate: dataItem.pinCodeDeliveryDate,
+          otpCodeReceptionDate: dataItem.otpCodeReceptionDate,
+          otpCodeDeliveryDate: dataItem.otpCodeDeliveryDate,
         }),
       });
       if (!res.ok) {
@@ -211,10 +205,7 @@ const CreateMagneticCardPage = () => {
           render={(formRenderProps: FormRenderProps) => (
             <FormElement style={{ maxWidth: 650 }}>
               <fieldset className="k-form-fieldset">
-                <legend
-                  className="k-form-legend"
-                  style={{ textTransform: "lowercase" }}
-                >
+                <legend className="k-form-legend" style={{ textTransform: "lowercase" }}>
                   create magnetic card
                 </legend>
                 <div style={{ marginBottom: "1rem" }}>
@@ -295,42 +286,37 @@ const CreateMagneticCardPage = () => {
                 <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="requestDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="Request Date"
-                    type="date"
                     validator={requiredValidator}
                   />
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="issuedAt"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="Issued Date"
-                    type="date"
                   />
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="deliveryDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="Delivery Date"
-                    type="date"
                   />
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="receptionDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="Reception Date"
-                    type="date"
                   />
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="expirationDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="Expiration Date *"
-                    type="date"
                   />
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
@@ -387,17 +373,15 @@ const CreateMagneticCardPage = () => {
                 <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="pinCodeReceptionDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="PIN Reception Date"
-                    type="date"
                   />
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="pinCodeDeliveryDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="PIN Delivery Date"
-                    type="date"
                   />
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
@@ -410,17 +394,15 @@ const CreateMagneticCardPage = () => {
                 <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="otpCodeReceptionDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="OTP Reception Date"
-                    type="date"
                   />
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
                   <Field
                     name="otpCodeDeliveryDate"
-                    component={TextInput}
+                    component={DatePickerInput}
                     label="OTP Delivery Date"
-                    type="date"
                   />
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
