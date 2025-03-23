@@ -78,7 +78,13 @@ const ClientList: React.FC<ClientListProps> = ({
   };
 
   const CustomHeaderCell = (props: any) => {
-    const { thProps, columnMenuWrapperProps, selectionChange, ...rest } = props;
+    const {
+      thProps,
+      columnMenuWrapperProps,
+      selectionChange,
+      selectionValue,
+      ...rest
+    } = props;
     return (
       <th
         {...rest}

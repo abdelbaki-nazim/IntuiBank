@@ -20,7 +20,7 @@ export default function LayoutClient({
   }, []);
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%" }} className="app-container">
       <SideNav />
       <div
         style={{
