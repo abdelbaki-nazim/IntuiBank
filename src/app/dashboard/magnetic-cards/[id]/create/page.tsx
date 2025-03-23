@@ -18,7 +18,10 @@ import {
   NotificationGroup,
 } from "@progress/kendo-react-notification";
 import KLoader from "@/app/components/loader/KLoader";
-import { DatePicker, DatePickerChangeEvent } from "@progress/kendo-react-dateinputs";
+import {
+  DatePicker,
+  DatePickerChangeEvent,
+} from "@progress/kendo-react-dateinputs";
 
 const TextInput = (fieldRenderProps: FieldRenderProps) => {
   const { validationMessage, visited, label, ...others } = fieldRenderProps;
@@ -86,7 +89,8 @@ const DropDownInput = (
 };
 
 const DatePickerInput = (fieldRenderProps: FieldRenderProps) => {
-  const { validationMessage, visited, onChange, value, label, ...others } = fieldRenderProps;
+  const { validationMessage, visited, onChange, value, label, ...others } =
+    fieldRenderProps;
 
   const handleChange = (event: DatePickerChangeEvent) => {
     onChange({ target: { value: event.value } });
@@ -183,7 +187,7 @@ const CreateMagneticCardPage = () => {
         message: "Card created successfully",
         severity: "success",
       });
-      setTimeout(() => router.push(`/dashboard/magnetic-cards/${id}`), 2000);
+      setTimeout(() => router.push(`/dashboard/magnetic-cards`), 2000);
     } catch (err: any) {
       setToast({ open: true, message: err.message, severity: "error" });
     } finally {
@@ -204,7 +208,10 @@ const CreateMagneticCardPage = () => {
           render={(formRenderProps: FormRenderProps) => (
             <FormElement style={{ maxWidth: 650 }}>
               <fieldset className="k-form-fieldset">
-                <legend className="k-form-legend" style={{ textTransform: "lowercase" }}>
+                <legend
+                  className="k-form-legend"
+                  style={{ textTransform: "lowercase" }}
+                >
                   create magnetic card
                 </legend>
                 <div style={{ marginBottom: "1rem" }}>
