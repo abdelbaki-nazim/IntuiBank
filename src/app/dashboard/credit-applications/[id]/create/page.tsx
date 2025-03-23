@@ -8,7 +8,10 @@ import {
   CardActions,
 } from "@progress/kendo-react-layout";
 import { Input } from "@progress/kendo-react-inputs";
-import { DropDownList } from "@progress/kendo-react-dropdowns";
+import {
+  DropDownList,
+  DropDownListChangeEvent,
+} from "@progress/kendo-react-dropdowns";
 import { Button } from "@progress/kendo-react-buttons";
 import {
   Notification,
@@ -32,7 +35,6 @@ export default function CreateCreditApplicationPage() {
   }, []);
 
   const [form, setForm] = useState({
-    creditTypeId: "",
     creditTypeAbbrev: "",
     creditCode: "",
     activity: "",
@@ -53,6 +55,8 @@ export default function CreateCreditApplicationPage() {
     pnr: "",
   });
 
+  const [creditTypeId, setCreditTypeId] = useState<string>("");
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,14 +65,13 @@ export default function CreateCreditApplicationPage() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.value }));
   };
 
-  const handleSelectChange = (e: any) => {
-    const newValue =
-      e.target.value && e.target.value.value ? e.target.value.value : "";
-    setForm((prev) => ({ ...prev, creditTypeId: newValue }));
+  const handleSelectChange = (e: DropDownListChangeEvent) => {
+    const value = e.value.value ?  e.value.value : "";
+    setCreditTypeId(value);
   };
-
+  
   const validateForm = () => {
-    if (!form.creditTypeId || !form.creditTypeAbbrev || !form.creditCode) {
+    if (!creditTypeId || !form.creditTypeAbbrev || !form.creditCode) {
       return "Please fill in all required fields (Credit Type, Abbreviation, and solicitedAmount).";
     }
     return "";
@@ -87,7 +90,7 @@ export default function CreateCreditApplicationPage() {
       const payload = {
         clientId: userId,
         id: id,
-        creditTypeId: form.creditTypeId,
+        creditTypeId: creditTypeId,
         creditTypeAbbrev: form.creditTypeAbbrev,
         creditCode: form.creditCode,
         activity: form.activity,
@@ -124,6 +127,7 @@ export default function CreateCreditApplicationPage() {
       setIsSubmitting(false);
     }
   };
+
 
   if (loading) {
     return <KLoader />;
@@ -165,11 +169,6 @@ export default function CreateCreditApplicationPage() {
                   }
                   textField="text"
                   dataItemKey="value"
-                  value={
-                    creditTypes.find(
-                      (type: any) => type.id === form.creditTypeId
-                    ) || { value: "" }
-                  }
                   onChange={handleSelectChange}
                 />
               </div>
