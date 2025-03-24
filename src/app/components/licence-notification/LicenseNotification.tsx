@@ -7,12 +7,12 @@ import {
 } from "@progress/kendo-react-notification";
 
 const LicenseNotification: React.FC = () => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const dismissed = localStorage.getItem("licenseNotificationDismissed");
-    if (dismissed) {
-      setVisible(false);
+    if (!dismissed) {
+      setVisible(true);
     }
   }, []);
 
