@@ -82,7 +82,7 @@ export default function AccountDetailsPage() {
 
   useEffect(() => {
     if (!id) return;
-    fetch(`/api/accounts/${id}`)
+    fetch(`/api/accounts/${id}`, { next: { revalidate: 0 } })
       .then((res) => {
         if (!res.ok) {
           throw new Error("Error loading account.");
@@ -100,9 +100,7 @@ export default function AccountDetailsPage() {
   }, [id]);
 
   if (loading) {
-    return (
-      <KLoader/>
-    );
+    return <KLoader />;
   }
 
   if (error) {
