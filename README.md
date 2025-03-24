@@ -132,3 +132,4 @@ IntuiBank Dashboard combines React, Next.js, PostgreSQL, Prisma, and KendoReact.
 
 Happy coding!  
 **Akkal Abdelbaki Nazim**
+**Losange**
