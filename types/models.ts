@@ -173,7 +173,7 @@ export interface PersonMoral {
   stateDepartment: string;
   taxIdentificationNumber?: string | null;
   statisticalIdentificationNumber?: string | null;
-  businessCreationDate:  Date | null;
+  businessCreationDate: Date | null;
   annualRevenue?: number | null;
   professionalPhone: string;
   professionalMobile?: string | null;
@@ -350,7 +350,7 @@ export interface CreditApplication {
   account: Account;
   clientId: string;
   riskScore?: number | null;
-  riskCategory?: 'Low' | 'Medium' | 'High' | null;
+  riskCategory?: "Low" | "Medium" | "High" | null;
   lastRiskAssessment?: Date | null;
   riskComments?: string | null;
   credits?: Credit | null;
