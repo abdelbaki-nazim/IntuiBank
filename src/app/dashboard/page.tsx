@@ -12,6 +12,7 @@ import {
 import { Card, CardHeader, CardBody } from "@progress/kendo-react-layout";
 import CurrencyDashboard from "./CurrencyDashboard";
 import KLoader from "../components/loader/KLoader";
+import LicenseNotification from "../components/licence-notification/LicenseNotification";
 
 const toChartData = (labels: string[], data: number[]) =>
   labels.map((label, i) => ({
@@ -243,6 +244,8 @@ export default function StatisticsDashboardPage() {
       </div>
 
       <FinancialStatsCard stats={stats} />
+
+      <LicenseNotification />
     </div>
   );
 }
