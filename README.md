@@ -1,8 +1,3 @@
----
-title: "IntuiBank Dashboard"
-output: html_document
----
-
 # IntuiBank Dashboard
 
 **IntuiBank Dashboard** is an open-source financial management platform built for banking and credit institutions. It streamlines client onboarding, account management, credit processing, and legal actions in one unified interface.
@@ -137,3 +132,4 @@ IntuiBank Dashboard combines React, Next.js, PostgreSQL, Prisma, and KendoReact.
 
 Happy coding!  
 **Akkal Abdelbaki Nazim**
+**Losange**
