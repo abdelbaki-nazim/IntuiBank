@@ -57,13 +57,13 @@ enum CreationOrRenewal {
 }
 
 enum Civility {
-  MR  
-  MRS 
+  MR
+  MRS
   MS
-  MISS 
-  DR 
-  PROF 
-  MAITRE 
+  MISS
+  DR
+  PROF
+  MAITRE
 }
 
 enum ClientType {
@@ -267,7 +267,7 @@ model Account {
   id                   String         @id @default(cuid())
   client               Client         @relation(fields: [clientId], references: [id])
   clientId             String
-  accountNumber        String         @unique 
+  accountNumber        String         @unique
   accountDescription   String?
   accountPurpose       AccountPurpose @relation(fields: [accountPurposeId], references: [id])
   accountPurposeId     String
@@ -400,6 +400,13 @@ model CreditApplication {
   account  Account @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   clientId String
 
+  // AI-Driven Credit Risk Scoring fields
+  riskScore          Int?
+  riskCategory       String?
+  lastRiskAssessment DateTime?
+  riskComments       String?
+  dailyRequestCount  Int?
+
   credits Credit?
 
   createdAt DateTime @default(now())
@@ -416,40 +423,40 @@ model Credit {
   creditType          CreditType        @relation(fields: [creditTypeId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   // General Credit Information
-  principalAmount Float? 
-  interestRate    Float? 
+  principalAmount Float?
+  interestRate    Float?
   termInMonths    Int?
 
   // Credit Timeline
-  startDate          DateTime? 
-  endDate            DateTime? 
+  startDate          DateTime?
+  endDate            DateTime?
   monthlyInstallment Float?
 
   // Details
   approvedAmount      Float?
-  transmissionDate    DateTime? 
-  accordRecu          Boolean? 
-  accordDate          DateTime? 
-  deferredMonths      Int? 
+  transmissionDate    DateTime?
+  accordRecu          Boolean?
+  accordDate          DateTime?
+  deferredMonths      Int?
   bonification        Float?
   amountInLetter      String?
-  secondaryRC         String? 
+  secondaryRC         String?
   rcDate              DateTime?
-  accountNumber       String? 
+  accountNumber       String?
   clientIdentifier    String?
-  authorizationNumber String? 
-  authorizationDate   DateTime? 
-  decisionDate        DateTime? 
+  authorizationNumber String?
+  authorizationDate   DateTime?
+  decisionDate        DateTime?
   scheduledDueDate    DateTime?
-  authorizedAmount    Float? 
-  mobilisedAmount     Float? 
-  disbursementDate    DateTime? 
-  numberOfEffects     Int? 
-  firstDueDate        DateTime? 
+  authorizedAmount    Float?
+  mobilisedAmount     Float?
+  disbursementDate    DateTime?
+  numberOfEffects     Int?
+  firstDueDate        DateTime?
   lastDueDate         DateTime?
-  initialDossier      String? 
+  initialDossier      String?
   dossierNumber       String?
-  amendment           String? 
+  amendment           String?
 
   observation String?
 
@@ -479,15 +486,15 @@ model AmortizationEntry {
   id                String   @id @default(cuid())
   credit            Credit   @relation(fields: [creditId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   creditId          String
-  installmentNumber Int 
-  dueDate           DateTime 
+  installmentNumber Int
+  dueDate           DateTime
 
-  principalPortion Float? 
-  interestPortion  Float? 
+  principalPortion Float?
+  interestPortion  Float?
 
-  scheduledPayment Float? 
-  amountPaid       Float? 
-  carryOverPayment Float? 
+  scheduledPayment Float?
+  amountPaid       Float?
+  carryOverPayment Float?
 
   remainingBalance Float?
   paid             Boolean @default(false)
@@ -509,7 +516,7 @@ model AmortizationEntryHistory {
   newAmountPaid            Float?
   previousRemainingBalance Float?
   newRemainingBalance      Float?
-  differential             Float? 
+  differential             Float?
   changedBy                String?
   changeDate               DateTime          @default(now())
 }
@@ -563,7 +570,7 @@ model CreditLegalAction {
   id            String  @id @default(cuid())
   creditId      String
   credit        Credit  @relation(fields: [creditId], references: [id], onDelete: Cascade)
-  unpaidClaim   Float? 
+  unpaidClaim   Float?
   invitation    String?
   miseEnDemeure String?
   lastWarning   String?
@@ -578,7 +585,7 @@ model CreditLegalAction {
 
 model Currency {
   id        String    @id @default(cuid())
-  code      String    @unique 
+  code      String    @unique
   name      String
   symbol    String?
   isActive  Boolean   @default(true)
@@ -591,8 +598,8 @@ model AuditLog {
   id               String   @id @default(cuid())
   userId           String
   user             User     @relation(fields: [userId], references: [id])
-  actionType       String 
-  affectedEntity   String 
+  actionType       String
+  affectedEntity   String
   affectedEntityId String?
   ipAddress        String?
   userAgent        String?
@@ -611,7 +618,7 @@ model LoginLog {
   os            String?
   browser       String?
   browserVer    String?
-  locale        String? 
+  locale        String?
   country       String?
   region        String?
   city          String?

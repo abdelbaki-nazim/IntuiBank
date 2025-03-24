@@ -13,6 +13,7 @@ import { format } from "date-fns";
 import { CreditApplication } from "../../../../../types/models";
 import { MessageCard } from "@/app/components/messagecard/MessageCard";
 import KLoader from "@/app/components/loader/KLoader";
+import CreditApplicationAI from "./CreditApplicationAI";
 
 const FieldCard = ({
   label,
@@ -205,6 +206,7 @@ export default function CreditApplicationDetailPage() {
 
   return (
     <div style={{ margin: "2rem" }}>
+      <CreditApplicationAI />
       <AnimatedMessageContainer>
         {application && application.status === "PENDING" && (
           <MessageCard

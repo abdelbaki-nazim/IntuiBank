@@ -349,6 +349,10 @@ export interface CreditApplication {
   status: CreditStatus;
   account: Account;
   clientId: string;
+  riskScore?: number | null;
+  riskCategory?: 'Low' | 'Medium' | 'High' | null;
+  lastRiskAssessment?: Date | null;
+  riskComments?: string | null;
   credits?: Credit | null;
   createdAt: Date;
   updatedAt: Date;
