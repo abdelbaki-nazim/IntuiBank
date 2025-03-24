@@ -11,6 +11,7 @@ import {
 import { Typography } from "@progress/kendo-react-common";
 import KLoader from "@/app/components/loader/KLoader";
 import { Typewriter } from "react-simple-typewriter";
+import { Loader } from "@progress/kendo-react-indicators";
 
 interface AIRiskAssessment {
   riskScore: number;
@@ -65,15 +66,12 @@ export default function CreditApplicationAI() {
       }
 
       const data = await res.json();
-      // data.text is an array of strings, join and clean the markdown if present.
       let rawText: string = Array.isArray(data.text)
         ? data.text.join(" ")
         : data.text;
       rawText = rawText.replace(/^```json\s*/, "").replace(/\s*```$/, "");
-      // Parse the cleaned text as JSON and store it.
       const parsed: AIRiskAssessment = JSON.parse(rawText);
       setAssessment(parsed);
-      // Reset cursor states (if re-run).
       setShowScoreCursor(true);
       setShowCategoryCursor(true);
       setShowCommentsCursor(true);
@@ -93,22 +91,31 @@ export default function CreditApplicationAI() {
         margin: "2rem",
         padding: "1.5rem",
         borderRadius: "12px",
-        boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+        boxShadow: "0px 3px 6px rgba(0,0,0,0.1)",
       }}
     >
-      <Typography.h4 style={{ marginBottom: "1rem" }}>
+      <Typography.h5 style={{ marginBottom: "1rem" }}>
         AI Risk Assessment
-      </Typography.h4>
+      </Typography.h5>
 
       {!assessment && !loading && (
-        <div style={{ marginTop: "1rem" }}>
-          <Button onClick={runAssessment} disabled={loading}>
+        <div style={{ marginTop: "1rem", textAlign: "center" }}>
+          <Button
+            size={"large"}
+            themeColor={"secondary"}
+            onClick={runAssessment}
+            disabled={loading}
+          >
             {loading ? "Generating Assessment..." : "Run AI Assessment"}
           </Button>
         </div>
       )}
 
-      {loading && <KLoader />}
+      {loading && (
+        <div style={{ paddingBlock: 24, textAlign: "center" }}>
+          <Loader type="converging-spinner" />
+        </div>
+      )}
 
       {assessment && (
         <div
@@ -133,7 +140,9 @@ export default function CreditApplicationAI() {
             />
           </p>
 
-          <Typography.h6>Risk Category:</Typography.h6>
+          <Typography.h6 style={{ marginTop: "16px" }}>
+            Risk Category:
+          </Typography.h6>
           <p
             style={{
               fontSize: "18px",
@@ -152,7 +161,9 @@ export default function CreditApplicationAI() {
             />
           </p>
 
-          <Typography.h6>Risk Comments:</Typography.h6>
+          <Typography.h6 style={{ marginTop: "16px" }}>
+            Risk Comments:
+          </Typography.h6>
           <p style={{ fontSize: "16px" }}>
             <Typewriter
               words={[assessment.riskComments]}
@@ -165,7 +176,9 @@ export default function CreditApplicationAI() {
             />
           </p>
 
-          <Typography.h6>History Impact:</Typography.h6>
+          <Typography.h6 style={{ marginTop: "16px" }}>
+            History Impact:
+          </Typography.h6>
           <p style={{ fontSize: "16px" }}>
             <Typewriter
               words={[assessment.historyImpact]}

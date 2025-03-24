@@ -1,6 +1,6 @@
 "use client";
 
-import React, { memo, useCallback } from "react";
+import React, { memo, useState, useCallback } from "react";
 import {
   Card,
   CardTitle,
@@ -24,12 +24,34 @@ const MessageCardComponent: React.FC<MessageCardProps> = ({
   onButtonClick,
   type = "default",
 }) => {
-  const handleClick = useCallback(() => {
+  const [visible, setVisible] = useState(true);
+
+  const handleButtonClick = useCallback(() => {
     onButtonClick();
   }, [onButtonClick]);
 
+  const handleClose = useCallback(() => {
+    setVisible(false);
+  }, []);
+
+  if (!visible) return null;
+
   return (
-    <Card style={{ width: 300 }} type={type}>
+    <Card style={{ width: 300, position: "relative" }} type={type}>
+      <Button
+        type="button"
+        themeColor="light"
+        onClick={handleClose}
+        style={{
+          position: "absolute",
+          top: 5,
+          right: 5,
+          minWidth: "unset",
+          padding: "0 6px",
+        }}
+      >
+        X
+      </Button>
       <CardBody>
         <CardTitle>{title}</CardTitle>
         <p>{message}</p>
@@ -38,7 +60,7 @@ const MessageCardComponent: React.FC<MessageCardProps> = ({
         <Button
           type="button"
           themeColor={type === "default" ? "primary" : type}
-          onClick={handleClick}
+          onClick={handleButtonClick}
         >
           {buttonText}
         </Button>
