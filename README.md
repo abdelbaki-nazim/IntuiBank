@@ -50,7 +50,7 @@ Create a `.env` file in the root directory and configure your PostgreSQL connect
 ```bash
 DATABASE_URL=postgresql://user:password@localhost:5432/your_database
 NEXTAUTH_URL=https://your-api-url.com
-COHERE_API_KEY="kc84ipF3GSVazW5nEowJfHc79PRqHhWIPqBQmYcG"
+COHERE_API_KEY="api_key"
 ```
 
 ### 4. Run Prisma Migrations
