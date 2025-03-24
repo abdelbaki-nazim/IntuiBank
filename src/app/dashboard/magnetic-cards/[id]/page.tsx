@@ -101,7 +101,7 @@ export default function MagneticCardDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/magnetic-card/${id}`)
+    fetch(`/api/magnetic-card/${id}`, { next: { revalidate: 0 } })
       .then((res) => res.json())
       .then((data: MagneticCard) => {
         setCard(data);
@@ -188,7 +188,8 @@ export default function MagneticCardDetailPage() {
               </div>
               <div style={{ flex: "1 1 45%" }}>
                 <Typography.p style={{ textTransform: "lowercase" }}>
-                  <strong>status:</strong> {(card?.status && card.status.toLowerCase() )?? ""}
+                  <strong>status:</strong>{" "}
+                  {(card?.status && card.status.toLowerCase()) ?? ""}
                 </Typography.p>
               </div>
               <div style={{ flex: "1 1 45%" }}>

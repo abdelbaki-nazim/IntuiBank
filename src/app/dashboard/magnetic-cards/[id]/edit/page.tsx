@@ -138,7 +138,9 @@ const EditMagneticCardPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`/api/magnetic-card/${id}`);
+        const res = await fetch(`/api/magnetic-card/${id}`, {
+          next: { revalidate: 0 },
+        });
         const data = await res.json();
         setInitialValues({
           cardNumber: data.cardNumber || "",

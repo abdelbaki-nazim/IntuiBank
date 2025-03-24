@@ -109,7 +109,7 @@ export default function CreditApplicationDetailPage() {
   };
 
   useEffect(() => {
-    fetch(`/api/credit-applications/${id}`)
+    fetch(`/api/credit-applications/${id}`, { next: { revalidate: 0 } })
       .then((res) => {
         if (!res.ok) throw new Error("Error retrieving credit application");
         return res.json();

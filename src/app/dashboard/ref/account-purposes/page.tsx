@@ -14,7 +14,7 @@ export default function AccountPurposesList() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch("/api/account-purposes")
+    fetch("/api/account-purposes", { next: { revalidate: 0 } })
       .then((res) => res.json())
       .then((data) => {
         setPurposes(data);

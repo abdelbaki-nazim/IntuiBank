@@ -29,7 +29,7 @@ export default function EditCreditApplicationPage() {
   console.log(creditTypes);
 
   useEffect(() => {
-    fetch("/api/credit-types")
+    fetch("/api/credit-types", { next: { revalidate: 0 } })
       .then((res) => res.json())
       .then((data) => setCreditTypes(data))
       .catch((err) => console.error("Error fetching credit types", err));
@@ -65,7 +65,9 @@ export default function EditCreditApplicationPage() {
   useEffect(() => {
     const fetchCreditApp = async () => {
       try {
-        const res = await fetch(`/api/credit-applications/${id}`);
+        const res = await fetch(`/api/credit-applications/${id}`, {
+          next: { revalidate: 0 },
+        });
         if (!res.ok) {
           const data = await res.json();
           throw new Error(

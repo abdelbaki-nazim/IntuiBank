@@ -61,7 +61,9 @@ export default function MultiStepsPage() {
   useEffect(() => {
     async function fetchStatus() {
       try {
-        const response = await fetch(`/api/credit-applications/${id}/status`);
+        const response = await fetch(`/api/credit-applications/${id}/status`, {
+          next: { revalidate: 0 },
+        });
         if (!response.ok) {
           throw new Error("Error fetching status");
         }

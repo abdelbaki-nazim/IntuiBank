@@ -26,7 +26,8 @@ export default function CreditSummaryPage() {
     async function fetchStatus() {
       try {
         const res = await fetch(
-          `/api/credit-applications/${id}/status?getAllRelatedData=true`
+          `/api/credit-applications/${id}/status?getAllRelatedData=true`,
+          { next: { revalidate: 0 } }
         );
         if (!res.ok) {
           throw new Error("Error fetching status");
