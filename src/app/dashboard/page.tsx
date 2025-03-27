@@ -191,9 +191,15 @@ export default function StatisticsDashboardPage() {
         </Card>
 
         <Card>
-          <div style={{ padding: "16px" }}>
+          <div
+            style={{
+              padding: "16px",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <h6>User Roles Distribution</h6>
-            <Chart>
+            <Chart style={{ width: 280, height: 340, alignSelf: "center" }}>
               <ChartTitle text="User Roles" />
               <ChartLegend position="bottom" />
               <ChartSeries>
