@@ -24,6 +24,7 @@ export default function StatisticsDashboardPage() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [clientStatusData, setClientStatusData] = useState<any[]>([]);
 
   useEffect(() => {
     fetch("/api/statistics", { next: { revalidate: 0 } })
@@ -39,6 +40,23 @@ export default function StatisticsDashboardPage() {
       });
   }, []);
 
+  // Chart 1: Clients by Status (Pie)
+  useEffect(() => {
+    if (stats && stats.clients) {
+      const clientStatusLabels = Object.keys(stats.clients.byStatus);
+      const clientStatusCounts = clientStatusLabels.map(
+        (status) => stats.clients.byStatus[status]
+      );
+      const data = toChartData(clientStatusLabels, clientStatusCounts).map(
+        (item) => ({
+          ...item,
+          explode: item.category.toUpperCase() === "ACTIVE",
+        })
+      );
+      setClientStatusData(data);
+    }
+  }, [stats]);
+
   if (loading) {
     return <KLoader />;
   }
@@ -52,21 +70,14 @@ export default function StatisticsDashboardPage() {
   }
 
   // Chart 1: Clients by Status (Pie)
-  const clientStatusLabels = stats?.clients
-    ? Object.keys(stats.clients.byStatus)
-    : undefined;
-  const clientStatusCounts = clientStatusLabels
-    ? clientStatusLabels.map((status) => stats.clients.byStatus[status])
-    : undefined;
-
-  const clientStatusChartData =
-    clientStatusLabels && clientStatusCounts
-      ? toChartData(clientStatusLabels, clientStatusCounts).map((item) =>
-          item.category.toUpperCase() === "ACTIVE"
-            ? { ...item, explode: true }
-            : item
-        )
-      : undefined;
+  const onSeriesClick = (event: any) => {
+    const newData = clientStatusData.map((item) => ({
+      ...item,
+      explode:
+        item.category === event.dataItem.category ? !item.explode : false,
+    }));
+    setClientStatusData(newData);
+  };
 
   // Chart 2: Clients by Type (Donut)
   const clientTypeLabels = Object.keys(stats.clients.byType);
@@ -130,13 +141,13 @@ export default function StatisticsDashboardPage() {
         <Card>
           <div style={{ padding: "16px" }}>
             <h6>Clients by Status</h6>
-            <Chart>
+            <Chart onSeriesClick={onSeriesClick}>
               <ChartTitle text="Clients by Status" />
               <ChartLegend position="bottom" />
               <ChartSeries>
                 <ChartSeriesItem
                   type="pie"
-                  data={clientStatusChartData}
+                  data={clientStatusData}
                   field="value"
                   categoryField="category"
                   explodeField="explode"
