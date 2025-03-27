@@ -62,7 +62,9 @@ export default function StatisticsDashboardPage() {
   const clientStatusChartData =
     clientStatusLabels && clientStatusCounts
       ? toChartData(clientStatusLabels, clientStatusCounts).map((item) =>
-          item.category === "ACTIVE" ? { ...item, explode: true } : item
+          item.category.toUpperCase() === "ACTIVE"
+            ? { ...item, explode: true }
+            : item
         )
       : undefined;
 
