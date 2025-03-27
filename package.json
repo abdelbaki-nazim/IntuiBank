@@ -11,6 +11,7 @@
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "@progress/kendo-data-query": "^1.7.1",
+    "@progress/kendo-drawing": "^1.21.2",
     "@progress/kendo-licensing": "^1.5.1",
     "@progress/kendo-popup-common": "^1.9.2",
     "@progress/kendo-react-barcodes": "^10.0.0",
