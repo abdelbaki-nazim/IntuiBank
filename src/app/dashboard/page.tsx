@@ -189,6 +189,7 @@ export default function StatisticsDashboardPage() {
                   field="value"
                   categoryField="category"
                   tooltip={{ visible: true }}
+                  overlay={{ gradient: "roundedBevel" }}
                 />
               </ChartSeries>
             </Chart>
