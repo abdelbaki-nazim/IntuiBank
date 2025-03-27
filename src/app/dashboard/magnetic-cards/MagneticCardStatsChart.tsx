@@ -184,7 +184,7 @@ const MagneticCardStatsChart: React.FC = () => {
             ))}
           </Grid>
         </div>
-        <div style={{ flex: "1", height: "300px" }}>
+        <div style={{ flex: "1", height: "300px", marginBottom: 12 }}>
           <h3>Distribution by Card Type</h3>
           <Chart>
             <ChartLegend position="top" />
@@ -194,6 +194,7 @@ const MagneticCardStatsChart: React.FC = () => {
                 data={pieChartData}
                 categoryField="category"
                 field="value"
+                tooltip={{ visible: true }}
               />
             </ChartSeries>
           </Chart>
