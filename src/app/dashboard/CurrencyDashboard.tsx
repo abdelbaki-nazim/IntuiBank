@@ -119,6 +119,7 @@ export default function CurrencyAreaChart() {
             name="EUR"
             color="#337AFF"
             opacity={0.3}
+            tooltip={{ visible: true }}
           />
           <ChartSeriesItem
             type="area"
@@ -128,6 +129,7 @@ export default function CurrencyAreaChart() {
             name="GBP"
             color="#FF5733"
             opacity={0.3}
+            tooltip={{ visible: true }}
           />
           <ChartSeriesItem
             type="area"
@@ -137,6 +139,7 @@ export default function CurrencyAreaChart() {
             name="CHF"
             color="#33CC33"
             opacity={0.3}
+            tooltip={{ visible: true }}
           />
           <ChartSeriesItem
             type="area"
@@ -145,6 +148,7 @@ export default function CurrencyAreaChart() {
             categoryField="date"
             name="CAD"
             opacity={0.3}
+            tooltip={{ visible: true }}
           />
         </ChartSeries>
       </Chart>
