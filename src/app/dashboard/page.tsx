@@ -139,6 +139,7 @@ export default function StatisticsDashboardPage() {
                   data={clientStatusChartData}
                   field="value"
                   categoryField="category"
+                  explodeField="explode"
                   tooltip={{ visible: true }}
                   overlay={{ gradient: "sharpBevel" }}
                 />
@@ -205,7 +206,10 @@ export default function StatisticsDashboardPage() {
             }}
           >
             <h6>User Roles Distribution</h6>
-            <Chart style={{ width: 280, height: 340, alignSelf: "center" }}>
+            <Chart
+              style={{ width: 280, height: 340, alignSelf: "center" }}
+              seriesColors={["#FCE1D2", "#E6E2AF", "#C8D8E4", "#BFD7EA"]}
+            >
               <ChartTitle text="User Roles" />
               <ChartLegend position="bottom" />
               <ChartSeries>
