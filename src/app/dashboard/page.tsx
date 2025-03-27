@@ -135,6 +135,7 @@ export default function StatisticsDashboardPage() {
                   data={clientStatusChartData}
                   field="value"
                   categoryField="category"
+                  tooltip={{ visible: true }}
                 />
               </ChartSeries>
             </Chart>
@@ -153,6 +154,7 @@ export default function StatisticsDashboardPage() {
                   data={clientTypeChartData}
                   field="value"
                   categoryField="category"
+                  tooltip={{ visible: true }}
                 />
               </ChartSeries>
             </Chart>
@@ -181,6 +183,7 @@ export default function StatisticsDashboardPage() {
                   data={accountsChartData}
                   field="value"
                   categoryField="category"
+                  tooltip={{ visible: true }}
                 />
               </ChartSeries>
             </Chart>
@@ -199,6 +202,7 @@ export default function StatisticsDashboardPage() {
                   data={userRolesChartData}
                   field="value"
                   categoryField="category"
+                  tooltip={{ visible: true }}
                 />
               </ChartSeries>
             </Chart>
@@ -218,6 +222,7 @@ export default function StatisticsDashboardPage() {
                   field="value"
                   categoryField="category"
                   color={"#00FF7F"}
+                  tooltip={{ visible: true }}
                 />
               </ChartSeries>
             </Chart>
@@ -236,6 +241,7 @@ export default function StatisticsDashboardPage() {
                   data={creditAppsChartData}
                   field="value"
                   categoryField="category"
+                  tooltip={{ visible: true }}
                 />
               </ChartSeries>
             </Chart>
