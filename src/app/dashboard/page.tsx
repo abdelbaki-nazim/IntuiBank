@@ -61,7 +61,9 @@ export default function StatisticsDashboardPage() {
 
   const clientStatusChartData =
     clientStatusLabels && clientStatusCounts
-      ? toChartData(clientStatusLabels, clientStatusCounts)
+      ? toChartData(clientStatusLabels, clientStatusCounts).map((item) =>
+          item.category === "ACTIVE" ? { ...item, explode: true } : item
+        )
       : undefined;
 
   // Chart 2: Clients by Type (Donut)
@@ -136,6 +138,7 @@ export default function StatisticsDashboardPage() {
                   field="value"
                   categoryField="category"
                   tooltip={{ visible: true }}
+                  overlay={{ gradient: "sharpBevel" }}
                 />
               </ChartSeries>
             </Chart>
