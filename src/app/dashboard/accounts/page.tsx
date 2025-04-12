@@ -15,7 +15,7 @@ import {
   Loader,
 } from "@progress/kendo-react-indicators";
 import KLoader from "@/app/components/loader/KLoader";
-
+// a
 interface Client {
   id: string;
   type: "PHYSICAL" | "MORAL";
